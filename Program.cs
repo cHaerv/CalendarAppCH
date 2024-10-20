@@ -1,5 +1,7 @@
 using CalendarAppCH.Components;
 using Radzen;
+using Microsoft.EntityFrameworkCore;
+using CalendarAppCH.Data;
 
 namespace CalendarAppCH
 {
@@ -12,7 +14,13 @@ namespace CalendarAppCH
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            // add radzen components to the container.
             builder.Services.AddRadzenComponents();
+
+            // setup the db context using the connection string found in appsetting.Json
+            builder.Services.AddDbContext<CalendarDbContext>(options =>
+            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
