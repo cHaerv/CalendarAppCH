@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CalendarAppCH.Data
+namespace CalendarAppCH.Models
 {
     public class Appointment
     {

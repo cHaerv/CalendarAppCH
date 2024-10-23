@@ -2,6 +2,8 @@ using CalendarAppCH.Components;
 using Radzen;
 using Microsoft.EntityFrameworkCore;
 using CalendarAppCH.Data;
+using CalendarAppCH.Repositories;
+using Microsoft.Extensions.Configuration;
 
 namespace CalendarAppCH
 {
@@ -18,9 +20,19 @@ namespace CalendarAppCH
             // add radzen components to the container.
             builder.Services.AddRadzenComponents();
 
+            // Register repository
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+            // allows for dialogues in the frontend to open
+            builder.Services.AddScoped<DialogService>();
+
+
             // setup the db context using the connection string found in appsetting.Json
             builder.Services.AddDbContext<CalendarDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
+
+
 
             var app = builder.Build();
 
@@ -42,5 +54,6 @@ namespace CalendarAppCH
 
             app.Run();
         }
+
     }
 }

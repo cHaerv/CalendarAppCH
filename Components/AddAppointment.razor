@@ -1,0 +1,68 @@
+﻿@using Radzen
+@using CalendarAppCH.Models
+@using CalendarAppCH.Repositories
+@using CalendarAppCH.Components
+
+@inject IAppointmentRepository AppointmentRepository
+@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="Appointment" Data="@model" Submit=@OnSubmit>
+    <RadzenStack Gap="1rem">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap">
+            <RadzenLabel Text="Title" Style="width: 4rem;" />
+            <RadzenTextBox @bind-Value="@model.Text" Name="Text" Style="width: 12rem;" />
+            <RadzenRequiredValidator Component="Text" Text="Title is required" />
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap">
+            <RadzenLabel Text="Start" Style="width: 4rem;" />
+            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" Style="width: 12rem;" />
+            <RadzenRequiredValidator Component="Start" Text="Start is required" />
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap">
+            <RadzenLabel Text="End" Style="width: 4rem;" />
+            <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" Style="width: 12rem;" />
+            <RadzenRequiredValidator Component="End" Text="End is required" />
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End">
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+        </RadzenStack>
+    </RadzenStack>
+ </RadzenTemplateForm>
+
+@code {
+    [Parameter] public int AppointmentId { get; set; } // ID to identify which appointment to load
+    [Parameter] public DateTime Start { get; set; }
+    [Parameter] public DateTime End { get; set; }
+
+    Appointment model = new Appointment();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Console.WriteLine($"OnParametersSetAsync called: Start={Start}, End={End}, AppointmentId={AppointmentId}");
+       
+        if (AppointmentId > 0) // If we're editing an existing appointment
+        {
+            model = await AppointmentRepository.GetAppointmentByIdAsync(AppointmentId);
+            Console.WriteLine($"Loaded appointment: {model.Text}, Start={model.Start}, End={model.End}");
+        }
+        else // Setting default values for a new appointment
+        {
+            model.Start = Start;
+            model.End = End;
+            Console.WriteLine($"Setting new appointment: Start={model.Start}, End={model.End}");
+        }
+    }
+
+    void OnSubmit(Appointment appointment)
+    {
+        if (appointment != null)
+        {
+            Console.WriteLine($"Submitted appointment: {appointment.Text}, Start={appointment.Start}, End={appointment.End}");
+            DialogService.Close(appointment);
+        }
+        else
+        {
+            Console.WriteLine("Appointment is null.");
+        }
+    }
+}

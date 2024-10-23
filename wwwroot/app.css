@@ -27,3 +27,330 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+/*.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.week {
+    display: contents;
+}
+
+.day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    min-height: 100px;*/ /* Make each day a bit taller */
+/*}
+
+.appointment {
+    background-color: #f0f8ff;
+    border-radius: 4px;
+    padding: 2px;
+    margin-top: 2px;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+    .modal input {
+        margin-bottom: 10px;
+        width: 100%;
+    }*/
+
+
+/** {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    background: #ef62da;
+    min-height: 100vh;
+    padding: 0 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-container {
+    background: #fff;
+    width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    position: relative;
+}
+
+.calendar-navigation {
+    position: relative;*/ /* No need for flex here */
+/*}
+
+#calendar-prev,
+#calendar-next {
+    background: none;
+    border: none;
+    color: #6332c5;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#calendar-prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#calendar-next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+    #calendar-prev:hover,
+    #calendar-next:hover {
+        background-color: #f2f2f2;
+    }
+
+    .calendar-container header {
+        display: flex;
+        align-items: center;
+        padding: 25px 30px 10px;
+        justify-content: space-between;
+    }
+
+header .calendar-navigation {
+    display: flex;
+}
+
+
+    header .calendar-navigation span {
+        height: 38px;
+        width: 38px;
+        margin: 0 1px;
+        cursor: pointer;
+        text-align: center;
+        line-height: 38px;
+        border-radius: 50%;
+        user-select: none;
+        color: #aeabab;
+        font-size: 1.9rem;
+    }
+
+.calendar-navigation span:last-child {
+    margin-right: -10px;
+}
+
+header .calendar-navigation span:hover {
+    background: #f2f2f2;
+}
+
+header .calendar-current-date {
+    font-weight: 500;
+    font-size: 1.45rem;
+}
+
+.calendar-body {
+    padding: 20px;
+}
+
+    .calendar-body ul {
+        list-style: none;
+        flex-wrap: wrap;
+        display: flex;
+        text-align: center;
+    }
+
+    .calendar-body .calendar-dates {
+        margin-bottom: 20px;
+    }
+
+    .calendar-body li {
+        width: calc(100% / 7);
+        font-size: 1.07rem;
+        color: #414141;
+    }
+
+    .calendar-body .calendar-weekdays li {
+        cursor: default;
+        font-weight: 500;
+    }
+
+    .calendar-body .calendar-dates li {
+        margin-top: 30px;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+.calendar-dates li.inactive {
+    color: #aaa;
+}
+
+.calendar-dates li.active {
+    color: #fff;
+}
+
+.calendar-dates li::before {
+    position: absolute;
+    content: "";
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.calendar-dates li.active::before {
+    background: #6332c5;
+}
+
+.calendar-dates li:not(.active):hover::before {
+    background: #e4e1e1;
+}*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full view height */
+    margin: 0;
+    background-color: #f0f0f0; /* Light background for visibility */
+}
+
+.calendar-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Title, Grid, and Navigation */
+    gap: 10px;
+    justify-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}
+.calendar-wrapper {
+    display: grid;
+    grid-template-rows: auto auto; /* Two rows: one for the calendar, one for the form */
+    justify-items: center;
+    gap: 20px; /* Space between the calendar and the form */
+}
+
+.calendar-title {
+    grid-row: 1;
+    text-align: center;
+}
+
+.calendar-grid {
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
+    gap: 10px;
+    width: 100%;
+}}
+
+.calendar-day {
+    border: 1px solid #ddd; /* Solid border */
+    padding: 20px; /* Increase padding for larger boxes */
+    margin: 5px; /* Space between days */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f9f9f9; /* Background color for days */
+    height: 80px; /* Fixed height to allow space for events */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack contents vertically */
+    justify-content: flex-start; /* Align contents to the start */
+}
+
+    .calendar-day p {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+.event {
+    background-color: #e0f7fa; /* Light blue for events */
+    border-radius: 3px; /* Slightly rounded corners for events */
+    padding: 5px; /* Padding for events */
+    margin-top: 5px; /* Space above events */
+    font-size: 0.9rem; /* Slightly smaller font for event text */
+}
+    .event p {
+        margin: 0;
+    }
+
+.calendar-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+}
+
+    .calendar-navigation button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin:2rem;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .calendar-navigation button:hover {
+            background-color: #45a049;
+        }
+
+
+.appointment-form {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+    .appointment-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .appointment-form input {
+        margin-bottom: 10px;
+        padding: 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .appointment-form button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+    }

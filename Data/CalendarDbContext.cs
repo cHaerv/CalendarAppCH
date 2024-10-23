@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Radzen.Blazor.Rendering;
+using CalendarAppCH.Models;
 
 namespace CalendarAppCH.Data
 {

@@ -1,0 +1,16 @@
+﻿@code {
+    private List<string> logs = new List<string>();
+
+    public void Log(string message)
+    {
+        logs.Add(message);
+        StateHasChanged(); // Update the UI to reflect the new log
+    }
+}
+
+<div style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+    @foreach (var log in logs)
+    {
+        <div>@log</div>
+    }
+</div>

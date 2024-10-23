@@ -1,7 +1,140 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@using CalendarAppCH.Models
+@using CalendarAppCH.Repositories
+@using CalendarAppCH.Components
+@using System.Globalization
+@inject IAppointmentRepository AppointmentRepository
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="calendar-container">
+    <div class="calendar-container">
+        <!-- Title Row -->
+        <div class="calendar-title">
+            <h3>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(CurrentMonth) @CurrentYear</h3>
+        </div>
+
+        <!-- Calendar Grid for Days -->
+        <div class="calendar-grid">
+            @foreach (var date in Dates)
+            {
+                <div class="calendar-day">
+                    <p>@date.Day</p>
+
+                    @* Display events for the current date *@
+                    @foreach (var appointment in GetAppointmentsForDate(date))
+                    {
+                        <div class="event">
+                            <p>@appointment.Text</p>
+                            <p>@appointment.Start.ToShortTimeString() - @appointment.End.ToShortTimeString()</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+
+        <!-- Navigation Row -->
+        <div class="calendar-navigation">
+            <button @onclick="GoToPreviousMonth">Previous</button>
+            <button @onclick="GoToNextMonth">Next</button>
+        </div>
+    </div>
+
+
+    <div class="appointment-form">
+        <h3>Add a New Appointment</h3>
+        <label for="appointmentText">Appointment Title:</label>
+        <input type="text" @bind="newAppointment.Text" id="appointmentText" />
+
+        <label for="appointmentStart">Start Time:</label>
+        <input type="datetime-local" @bind="newAppointment.Start" id="appointmentStart" />
+
+        <label for="appointmentEnd">End Time:</label>
+        <input type="datetime-local" @bind="newAppointment.End" id="appointmentEnd" />
+
+        <button @onclick="AddAppointment">Add Appointment</button>
+    </div>
+</div>
+
+
+
+
+@code {
+    private List<Appointment> Appointments = new List<Appointment>();
+   
+    private Appointment newAppointment = new Appointment();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch all appointments from the repository
+        Appointments = await AppointmentRepository.GetAppointmentsAsync();
+    }
+
+    // Get appointments for a specific day
+    private IEnumerable<Appointment> GetAppointmentsForDate(DateTime date)
+    {
+        return Appointments.Where(appointment => appointment.Start.Date == date.Date);
+    }
+
+    private List<DateTime> Dates = new List<DateTime>();
+    private int CurrentMonth = DateTime.Now.Month;
+    private int CurrentYear = DateTime.Now.Year;
+
+    private async Task AddAppointment()
+    {
+        if (newAppointment.Start != default && newAppointment.End != default && !string.IsNullOrWhiteSpace(newAppointment.Text))
+        {
+            await AppointmentRepository.AddAppointmentAsync(newAppointment);
+            Appointments = await AppointmentRepository.GetAppointmentsAsync();
+            newAppointment = new Appointment(); // Reset the form after submission
+            StateHasChanged(); // Force the UI to refresh
+        }
+    }
+
+    // Methods to change the month
+    private void GoToPreviousMonth()
+    {
+        if (CurrentMonth == 1)
+        {
+            CurrentMonth = 12;
+            CurrentYear--;
+        }
+        else
+        {
+            CurrentMonth--;
+        }
+        UpdateCalendar();
+    }
+
+    private void GoToNextMonth()
+    {
+        if (CurrentMonth == 12)
+        {
+            CurrentMonth = 1;
+            CurrentYear++;
+        }
+        else
+        {
+            CurrentMonth++;
+        }
+        UpdateCalendar();
+    }
+
+    private void UpdateCalendar()
+    {
+        Dates.Clear();
+        var daysInMonth = DateTime.DaysInMonth(CurrentYear, CurrentMonth);
+        for (int i = 1; i <= daysInMonth; i++)
+        {
+            Dates.Add(new DateTime(CurrentYear, CurrentMonth, i));
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        UpdateCalendar();
+    }
+}
+
